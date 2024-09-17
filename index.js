@@ -2,35 +2,36 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Erstellt __dirname, da es in ES-Modulen nicht direkt verfügbar ist
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Erstellt dirname, da es in ES-Modulen nicht direkt verfügbar ist
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
-// Express App initialisieren
+// Express App initialisieren // Liest den PORT-Wert aus der Umgebungsvariable `PORT`.
+// Falls nicht gefunden, wird der Standardwert 3000 verwendet.
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware zum Servieren statischer Dateien (HTML, CSS usw.) aus dem public-Verzeichnis
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(dirname, "public")));
 
 // Middleware zum Parsen von URL-encoded Daten (Formulardaten)
 app.use(express.urlencoded({ extended: true }));
 
 // Route für die Startseite
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(dirname, "public", "index.html"));
 });
 
 // Route für die Login-Seite
 app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "login.html"));
+  res.sendFile(path.join(dirname, "public", "login.html"));
 });
 
 // POST-Route zum Verarbeiten von Login-Formulardaten
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
-  if (email === "user@email.com" && password === "very-secret") {
+  if (email === "user@email.com" && password === "top-secret") {
     res.redirect("/my-account");
   } else {
     res.redirect("/error");
@@ -39,12 +40,12 @@ app.post("/login", (req, res) => {
 
 // Route für My Account Seite
 app.get("/my-account", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "my-account.html"));
+  res.sendFile(path.join(dirname, "public", "my-account.html"));
 });
 
 // Route für Fehlerseite
 app.get("/error", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "error.html"));
+  res.sendFile(path.join(dirname, "public", "error.html"));
 });
 
 // Beispiel-Route: Echo-Route
